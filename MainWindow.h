@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include <QtCore/QList>
+
+#include "AgendaTopic.h"
 
 namespace Ui {
     class MainWindow;
@@ -17,8 +20,15 @@ public:
 
     void mainWindowSetup(Ui::MainWindow *ui);
 
+public slots:
+    void switchToNextTopic();
+    void switchToPreviousTopic();
+    void switchToTopic(int number);
+
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow          *ui;
+    QList<AgendaTopic *>    m_topics;
+    int                     m_currentTopic;
 };
 
 #endif // MAINWINDOW_H
