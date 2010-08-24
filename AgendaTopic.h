@@ -15,6 +15,7 @@ public:
     const QString &topicName() const;
     const QTime   &timeNeeded() const;
     const QTime   &timeSpent() const;
+    void addTime(int thisManySeconds);
 
 signals:
 

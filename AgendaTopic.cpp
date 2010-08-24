@@ -22,3 +22,6 @@ const QTime &AgendaTopic::timeSpent() const {
     return m_timeSpent;
 }
 
+void AgendaTopic::addTime(int thisManySeconds) {
+    m_timeSpent.addSecs(thisManySeconds);
+}

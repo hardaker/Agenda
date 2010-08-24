@@ -3,7 +3,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow), m_timer()
 {
     ui->setupUi(this);
 
@@ -25,7 +25,6 @@ void MainWindow::mainWindowSetup(Ui::MainWindow *ui) {
 
     ui->totalTime->setText("4:05 / 12:00");
     ui->timeLeft->setText("0:05 / 5:00");
-
 }
 
 void MainWindow::switchToTopic(int number) {
@@ -50,4 +49,16 @@ void MainWindow::switchToNextTopic() {
 void MainWindow::switchToPreviousTopic() {
     if (m_currentTopic > 1)
         switchToTopic(--m_currentTopic);
+}
+
+void MainWindow::timeElapsed() {
+    m_topics[m_currentTopic]->addTime(1);
+}
+
+void MainWindow::pause() {
+    m_timer.stop();
+}
+
+void MainWindow::start() {
+    m_timer.start(1000);
 }
