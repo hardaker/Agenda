@@ -51,8 +51,13 @@ void MainWindow::switchToPreviousTopic() {
         switchToTopic(--m_currentTopic);
 }
 
+void MainWindow::updateScreenTimers() {
+    ui->timeLeft->setText(m_topics[m_currentTopic-1]->timeSpentStr());
+}
+
 void MainWindow::timeElapsed() {
-    m_topics[m_currentTopic]->addTime(1);
+    m_topics[m_currentTopic-1]->addTime(1);
+    updateScreenTimers();
 }
 
 void MainWindow::pause() {

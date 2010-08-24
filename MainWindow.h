@@ -25,6 +25,7 @@ public slots:
     void switchToNextTopic();
     void switchToPreviousTopic();
     void switchToTopic(int number);
+    void updateScreenTimers();
     void timeElapsed();
 
     void pause();
