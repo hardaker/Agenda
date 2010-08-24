@@ -11,9 +11,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    AgendaTopic.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    AgendaTopic.h
 
 FORMS    += MainWindow.ui
 
