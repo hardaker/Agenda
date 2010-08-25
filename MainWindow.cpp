@@ -55,20 +55,34 @@ void MainWindow::setupMenus() {
 
 void MainWindow::editTopics() {
     AgendaDialog topicDialog;
+
+    // generate the current list of topics into a string
     QString list;
     for(QList<AgendaTopic *>::iterator begin = m_topics.begin(); begin != m_topics.end(); begin++) {
-        list = list + (*begin)->topicName() + QString("\n");
+        list = list + (*begin)->timeNeededStr() + "\t" + (*begin)->topicName() + QString("\n");
     }
     topicDialog.setTopics(list);
+
+    // exec the dialog for editng
     int result = topicDialog.exec();
+
+    // parse the results
     if (result == QDialog::Accepted) {
         m_topics.clear(); // X mem leak
+
+        QRegExp exp("^\\s*(\\d+):(\\d+)\\s+(.*)");
+        QStringList results;
 
         QStringList topics = topicDialog.getTopics();
         QStringList::iterator begin;
         QStringList::iterator end = topics.end();
         for(begin = topics.begin(); begin != end; begin++) {
-            m_topics.append(new AgendaTopic(*begin, QTime(0,0)));
+            if(exp.indexIn(*begin) != -1) {
+                m_topics.append(new AgendaTopic(exp.cap(3),
+                                                QTime(0, exp.cap(1).toInt(), exp.cap(2).toInt())));
+            } else {
+                m_topics.append(new AgendaTopic(*begin, QTime(0,0)));
+            }
         }
     }
     m_currentTopic = 1;
