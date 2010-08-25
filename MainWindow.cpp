@@ -1,5 +1,10 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "AgendaDialog.h"
+
+#include <QtGui/QMenuBar>
+#include <QtGui/QActionGroup>
+#include <QtGui/QAction>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -16,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_currentTopic = 1;
 
     mainWindowSetup(ui);
+    setupMenus();
 
     connect(ui->next, SIGNAL(clicked()), this, SLOT(switchToNextTopic()));
     connect(ui->previous, SIGNAL(clicked()), this, SLOT(switchToPreviousTopic()));
@@ -40,6 +46,25 @@ MainWindow::~MainWindow()
 void MainWindow::mainWindowSetup(Ui::MainWindow *ui) {
     switchToTopic(m_currentTopic);
     updateScreenTimers();
+}
+
+void MainWindow::setupMenus() {
+    QAction *action = menuBar()->addAction("Topics");
+    connect(action, SIGNAL(triggered()), this, SLOT(editTopics()));
+}
+
+void MainWindow::editTopics() {
+    AgendaDialog topicDialog;
+    int result = topicDialog.exec();
+    if (result == QDialog::Accepted) {
+        QStringList topics = topicDialog.getTopics();
+        QStringList::iterator begin;
+        QStringList::iterator end = topics.end();
+        for(begin = topics.begin(); begin != end; begin++) {
+            qDebug() << *begin;
+        }
+    }
+    qDebug() << "done";
 }
 
 void MainWindow::switchToTopic(int number) {

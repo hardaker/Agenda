@@ -2,6 +2,7 @@
 #define AGENDADIALOG_H
 
 #include <QtGui/QDialog>
+#include <QtCore/QStringList>
 
 namespace Ui {
     class AgendaDialog;
@@ -14,6 +15,8 @@ class AgendaDialog : public QDialog
 public:
     explicit AgendaDialog(QWidget *parent = 0);
     ~AgendaDialog();
+
+    QStringList getTopics();
 
 private:
     Ui::AgendaDialog *ui;

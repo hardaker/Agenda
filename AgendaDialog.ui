@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>AgendaDialog</class>
  <widget class="QDialog" name="AgendaDialog">
   <property name="geometry">
@@ -15,28 +13,26 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>240</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTextEdit" name="agendaText"/>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="acceptAgenda">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <pixmapfunction/>
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>acceptAgenda</sender>
    <signal>accepted()</signal>
    <receiver>AgendaDialog</receiver>
    <slot>accept()</slot>
@@ -52,7 +48,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>acceptAgenda</sender>
    <signal>rejected()</signal>
    <receiver>AgendaDialog</receiver>
    <slot>reject()</slot>

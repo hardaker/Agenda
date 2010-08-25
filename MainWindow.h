@@ -21,6 +21,7 @@ public:
 
     void mainWindowSetup(Ui::MainWindow *ui);
     void addTimeToTopic(int hours, int minutes, int seconds);
+    void setupMenus();
 
 public slots:
     void switchToNextTopic();
@@ -29,6 +30,7 @@ public slots:
     void updateScreenTimers();
     void timeElapsed();
     void calculateTotalTimes();
+    void editTopics();
 
     void startOrStop();
 

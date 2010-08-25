@@ -1,5 +1,6 @@
 #include "AgendaDialog.h"
 #include "ui_AgendaDialog.h"
+#include <QDebug>
 
 AgendaDialog::AgendaDialog(QWidget *parent) :
     QDialog(parent),
@@ -11,4 +12,10 @@ AgendaDialog::AgendaDialog(QWidget *parent) :
 AgendaDialog::~AgendaDialog()
 {
     delete ui;
+}
+
+QStringList AgendaDialog::getTopics() {
+    QString topicText = ui->agendaText->document()->toPlainText();
+    QStringList topics = topicText.split('\n', QString::SkipEmptyParts);
+    return topics;
 }
