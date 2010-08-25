@@ -22,11 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->start, SIGNAL(clicked()), this, SLOT(startOrStop()));
 
     connect(ui->plus15, SIGNAL(clicked()), this, SLOT(add15m()));
-    connect(ui->plus15, SIGNAL(clicked()), this, SLOT(add5m()));
+    connect(ui->plus5, SIGNAL(clicked()), this, SLOT(add5m()));
     connect(ui->plus1, SIGNAL(clicked()), this, SLOT(add1m()));
 
     connect(ui->minus15, SIGNAL(clicked()), this, SLOT(minus15m()));
-    connect(ui->minus15, SIGNAL(clicked()), this, SLOT(minus5m()));
+    connect(ui->minus5, SIGNAL(clicked()), this, SLOT(minus5m()));
     connect(ui->minus1, SIGNAL(clicked()), this, SLOT(minus1m()));
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));

@@ -12,12 +12,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    AgendaTopic.cpp
+    AgendaTopic.cpp \
+    AgendaDialog.cpp
 
 HEADERS  += MainWindow.h \
-    AgendaTopic.h
+    AgendaTopic.h \
+    AgendaDialog.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    AgendaDialog.ui
 
 CONFIG += mobility
 MOBILITY = 
