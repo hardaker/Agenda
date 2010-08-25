@@ -67,6 +67,12 @@ void MainWindow::updateScreenTimers() {
         timerText = "<font color=\"green\">";
     }
     ui->timeLeft->setText(timerText + m_topics[m_currentTopic-1]->timeSpentStr() + QString(" / ") + m_topics[m_currentTopic-1]->timeNeededStr() + "</font>");
+
+    if (m_spentTime > m_totalNeededTime) {
+        timerText = "<font color=\"red\">";
+    } else {
+        timerText = "<font color=\"green\">";
+    }
     ui->totalTime->setText(timerText + m_spentTime.toString("mm:ss") + QString(" / ") + m_totalNeededTime.toString("mm:ss") + "</font>");
 }
 
