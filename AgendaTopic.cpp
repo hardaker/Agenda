@@ -25,7 +25,11 @@ const QTime &AgendaTopic::timeSpent() const {
 }
 
 QString AgendaTopic::timeSpentStr() const {
-    return m_timeSpent.toString("mm::ss");
+    return m_timeSpent.toString("mm:ss");
+}
+
+QString AgendaTopic::timeNeededStr() const {
+    return m_timeNeeded.toString("mm:ss");
 }
 
 void AgendaTopic::addTime(int thisManySeconds) {

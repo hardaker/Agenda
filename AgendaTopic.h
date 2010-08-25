@@ -16,6 +16,7 @@ public:
     const QTime   &timeNeeded() const;
     const QTime   &timeSpent() const;
           QString timeSpentStr() const;
+          QString timeNeededStr() const;
     void addTime(int thisManySeconds);
 
 signals:
