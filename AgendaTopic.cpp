@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "AgendaTopic.h"
 
 AgendaTopic::AgendaTopic(QObject *parent) :
@@ -22,10 +24,10 @@ const QTime &AgendaTopic::timeSpent() const {
     return m_timeSpent;
 }
 
-const QString &AgendaTopic::timeSpentStr() const {
-    return m_timeSpent.toString("hh:mm");
+QString AgendaTopic::timeSpentStr() const {
+    return m_timeSpent.toString("mm::ss");
 }
 
 void AgendaTopic::addTime(int thisManySeconds) {
-    m_timeSpent.addSecs(thisManySeconds);
+    m_timeSpent = m_timeSpent.addSecs(thisManySeconds);
 }

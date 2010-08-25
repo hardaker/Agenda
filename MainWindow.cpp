@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_currentTopic = 1;
 
     mainWindowSetup(ui);
+
+    connect(ui->next, SIGNAL(clicked()), this, SLOT(switchToNextTopic()));
+    connect(ui->previous, SIGNAL(clicked()), this, SLOT(switchToPreviousTopic()));
+    connect(ui->start, SIGNAL(clicked()), this, SLOT(start()));
+    connect(ui->pause, SIGNAL(clicked()), this, SLOT(pause()));
+
 }
 
 MainWindow::~MainWindow()
@@ -22,9 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::mainWindowSetup(Ui::MainWindow *ui) {
     switchToTopic(m_currentTopic);
-
-    ui->totalTime->setText("4:05 / 12:00");
-    ui->timeLeft->setText("0:05 / 5:00");
+    updateScreenTimers();
 }
 
 void MainWindow::switchToTopic(int number) {
@@ -39,6 +44,7 @@ void MainWindow::switchToTopic(int number) {
     } else {
         ui->nextTopic->setText("");
     }
+    updateScreenTimers();
 }
 
 void MainWindow::switchToNextTopic() {
@@ -52,11 +58,14 @@ void MainWindow::switchToPreviousTopic() {
 }
 
 void MainWindow::updateScreenTimers() {
+    qDebug() << "setting to" << m_topics[m_currentTopic-1]->timeSpentStr();
     ui->timeLeft->setText(m_topics[m_currentTopic-1]->timeSpentStr());
 }
 
 void MainWindow::timeElapsed() {
+    qDebug() << "elapsed";
     m_topics[m_currentTopic-1]->addTime(1);
+    qDebug() << "new time:" << m_topics[m_currentTopic-1]->timeSpentStr();
     updateScreenTimers();
 }
 
@@ -65,5 +74,7 @@ void MainWindow::pause() {
 }
 
 void MainWindow::start() {
+    qDebug() << "starting";
     m_timer.start(1000);
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));
 }
