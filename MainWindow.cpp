@@ -60,8 +60,14 @@ void MainWindow::switchToPreviousTopic() {
 }
 
 void MainWindow::updateScreenTimers() {
-    ui->timeLeft->setText(m_topics[m_currentTopic-1]->timeSpentStr() + QString(" / ") + m_topics[m_currentTopic-1]->timeNeededStr());
-    ui->totalTime->setText(m_spentTime.toString("mm:ss") + QString(" / ") + m_totalNeededTime.toString("mm:ss"));
+    QString timerText;
+    if (m_topics[m_currentTopic-1]->timeSpent() > m_topics[m_currentTopic-1]->timeNeeded()) {
+        timerText = "<font color=\"red\">";
+    } else {
+        timerText = "<font color=\"green\">";
+    }
+    ui->timeLeft->setText(timerText + m_topics[m_currentTopic-1]->timeSpentStr() + QString(" / ") + m_topics[m_currentTopic-1]->timeNeededStr() + "</font>");
+    ui->totalTime->setText(timerText + m_spentTime.toString("mm:ss") + QString(" / ") + m_totalNeededTime.toString("mm:ss") + "</font>");
 }
 
 void MainWindow::timeElapsed() {
