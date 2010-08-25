@@ -55,13 +55,20 @@ void MainWindow::setupMenus() {
 
 void MainWindow::editTopics() {
     AgendaDialog topicDialog;
+    QString list;
+    for(QList<AgendaTopic *>::iterator begin = m_topics.begin(); begin != m_topics.end(); begin++) {
+        list = list + (*begin)->topicName() + QString("\n");
+    }
+    topicDialog.setTopics(list);
     int result = topicDialog.exec();
     if (result == QDialog::Accepted) {
+        m_topics.clear(); // X mem leak
+
         QStringList topics = topicDialog.getTopics();
         QStringList::iterator begin;
         QStringList::iterator end = topics.end();
         for(begin = topics.begin(); begin != end; begin++) {
-            qDebug() << *begin;
+            m_topics.append(new AgendaTopic(*begin, QTime(0,0)));
         }
     }
     qDebug() << "done";

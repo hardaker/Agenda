@@ -19,3 +19,7 @@ QStringList AgendaDialog::getTopics() {
     QStringList topics = topicText.split('\n', QString::SkipEmptyParts);
     return topics;
 }
+
+void AgendaDialog::setTopics(const QString &topics) {
+    ui->agendaText->setText(topics);
+}

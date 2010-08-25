@@ -17,6 +17,7 @@ public:
     ~AgendaDialog();
 
     QStringList getTopics();
+    void setTopics(const QString &topics);
 
 private:
     Ui::AgendaDialog *ui;
