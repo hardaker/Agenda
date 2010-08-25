@@ -29,8 +29,7 @@ public slots:
     void timeElapsed();
     void calculateTotalTimes();
 
-    void pause();
-    void start();
+    void startOrStop();
 
 private:
     Ui::MainWindow          *ui;

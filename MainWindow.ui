@@ -98,13 +98,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pause">
-          <property name="text">
-           <string>Pause</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="next">
           <property name="text">
            <string>&gt;&gt;</string>

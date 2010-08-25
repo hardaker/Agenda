@@ -19,9 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->next, SIGNAL(clicked()), this, SLOT(switchToNextTopic()));
     connect(ui->previous, SIGNAL(clicked()), this, SLOT(switchToPreviousTopic()));
-    connect(ui->start, SIGNAL(clicked()), this, SLOT(start()));
-    connect(ui->pause, SIGNAL(clicked()), this, SLOT(pause()));
+    connect(ui->start, SIGNAL(clicked()), this, SLOT(startOrStop()));
 
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));
 }
 
 MainWindow::~MainWindow()
@@ -70,13 +70,14 @@ void MainWindow::timeElapsed() {
     updateScreenTimers();
 }
 
-void MainWindow::pause() {
-    m_timer.stop();
-}
-
-void MainWindow::start() {
-    m_timer.start(1000);
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));
+void MainWindow::startOrStop() {
+    if (m_timer.isActive()) {
+        m_timer.stop();
+        ui->start->setText("Start");
+    } else {
+        m_timer.start(1000);
+        ui->start->setText("Pause");
+    }
 }
 
 void MainWindow::calculateTotalTimes() {
