@@ -27,6 +27,7 @@ public slots:
     void switchToTopic(int number);
     void updateScreenTimers();
     void timeElapsed();
+    void calculateTotalTimes();
 
     void pause();
     void start();
@@ -36,6 +37,8 @@ private:
     QList<AgendaTopic *>    m_topics;
     int                     m_currentTopic;
     QTimer                  m_timer;
+    QTime                   m_totalNeededTime;
+    QTime                   m_spentTime;
 };
 
 #endif // MAINWINDOW_H

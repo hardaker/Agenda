@@ -4,12 +4,14 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), m_timer()
+    ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0)
 {
     ui->setupUi(this);
 
     m_topics.push_back(new AgendaTopic("topic #1", QTime(0,5)));
     m_topics.push_back(new AgendaTopic("topic #2", QTime(0,15)));
+
+    calculateTotalTimes();
 
     m_currentTopic = 1;
 
@@ -59,10 +61,12 @@ void MainWindow::switchToPreviousTopic() {
 
 void MainWindow::updateScreenTimers() {
     ui->timeLeft->setText(m_topics[m_currentTopic-1]->timeSpentStr() + QString(" / ") + m_topics[m_currentTopic-1]->timeNeededStr());
+    ui->totalTime->setText(m_spentTime.toString("mm:ss") + QString(" / ") + m_totalNeededTime.toString("mm:ss"));
 }
 
 void MainWindow::timeElapsed() {
     m_topics[m_currentTopic-1]->addTime(1);
+    m_spentTime = m_spentTime.addSecs(1);
     updateScreenTimers();
 }
 
@@ -73,4 +77,19 @@ void MainWindow::pause() {
 void MainWindow::start() {
     m_timer.start(1000);
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));
+}
+
+void MainWindow::calculateTotalTimes() {
+    QList<AgendaTopic *>::iterator begin;
+    QList<AgendaTopic *>::iterator end = m_topics.end();
+
+    m_totalNeededTime = QTime(0,0);
+    m_spentTime = QTime(0,0);
+
+    for(begin = m_topics.begin(); begin != end; begin++) {
+        QTime newTime = (*begin)->timeNeeded();
+        m_totalNeededTime = m_totalNeededTime.addSecs(newTime.second() + 60 * newTime.minute() + 3600 * newTime.hour());
+        newTime = (*begin)->timeSpent();
+        m_spentTime = m_spentTime.addSecs(newTime.second() + 60 * newTime.minute() + 3600 * newTime.hour());
+    }
 }
