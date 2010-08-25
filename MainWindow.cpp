@@ -71,6 +71,9 @@ void MainWindow::editTopics() {
             m_topics.append(new AgendaTopic(*begin, QTime(0,0)));
         }
     }
+    m_currentTopic = 1;
+    calculateTotalTimes();
+    switchToTopic(m_currentTopic);
     qDebug() << "done";
 }
 
@@ -78,6 +81,7 @@ void MainWindow::switchToTopic(int number) {
     if (number > m_topics.count() || number < 1)
         return;
 
+    m_currentTopic = number;
     AgendaTopic *topic = m_topics[number-1];
     ui->topic->setText(topic->topicName());
 
