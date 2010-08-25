@@ -18,6 +18,7 @@ public:
           QString timeSpentStr() const;
           QString timeNeededStr() const;
     void addTime(int thisManySeconds);
+    void addNeededTime(int thisManySeconds);
 
 signals:
 

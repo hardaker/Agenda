@@ -35,3 +35,7 @@ QString AgendaTopic::timeNeededStr() const {
 void AgendaTopic::addTime(int thisManySeconds) {
     m_timeSpent = m_timeSpent.addSecs(thisManySeconds);
 }
+
+void AgendaTopic::addNeededTime(int thisManySeconds) {
+    m_timeNeeded = m_timeNeeded.addSecs(thisManySeconds);
+}

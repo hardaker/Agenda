@@ -83,6 +83,9 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
         <item>
          <widget class="QPushButton" name="previous">
           <property name="text">
@@ -105,6 +108,55 @@
          </widget>
         </item>
        </layout>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
+      <item>
+       <widget class="QPushButton" name="plus15">
+        <property name="text">
+         <string>+15m</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="plus5">
+        <property name="text">
+         <string>+5m</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="plus1">
+        <property name="text">
+         <string>+1m</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="minus1">
+        <property name="text">
+         <string>-1m</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="minus5">
+        <property name="text">
+         <string>-5m</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="minus15">
+        <property name="text">
+         <string>-15</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

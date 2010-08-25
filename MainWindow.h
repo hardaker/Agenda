@@ -20,6 +20,7 @@ public:
     ~MainWindow();
 
     void mainWindowSetup(Ui::MainWindow *ui);
+    void addTimeToTopic(int hours, int minutes, int seconds);
 
 public slots:
     void switchToNextTopic();
@@ -30,6 +31,13 @@ public slots:
     void calculateTotalTimes();
 
     void startOrStop();
+
+    void add15m();
+    void add5m();
+    void add1m();
+    void minus1m();
+    void minus5m();
+    void minus15m();
 
 private:
     Ui::MainWindow          *ui;

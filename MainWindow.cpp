@@ -21,6 +21,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->previous, SIGNAL(clicked()), this, SLOT(switchToPreviousTopic()));
     connect(ui->start, SIGNAL(clicked()), this, SLOT(startOrStop()));
 
+    connect(ui->plus15, SIGNAL(clicked()), this, SLOT(add15m()));
+    connect(ui->plus15, SIGNAL(clicked()), this, SLOT(add5m()));
+    connect(ui->plus1, SIGNAL(clicked()), this, SLOT(add1m()));
+
+    connect(ui->minus15, SIGNAL(clicked()), this, SLOT(minus15m()));
+    connect(ui->minus15, SIGNAL(clicked()), this, SLOT(minus5m()));
+    connect(ui->minus1, SIGNAL(clicked()), this, SLOT(minus1m()));
+
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));
 }
 
@@ -106,3 +114,37 @@ void MainWindow::calculateTotalTimes() {
         m_spentTime = m_spentTime.addSecs(newTime.second() + 60 * newTime.minute() + 3600 * newTime.hour());
     }
 }
+
+void MainWindow::addTimeToTopic(int hours, int minutes, int seconds) {
+    m_topics[m_currentTopic-1]->addNeededTime(hours * 3600 + minutes * 60 + seconds);
+    calculateTotalTimes();
+    updateScreenTimers();
+}
+
+void MainWindow::add15m() {
+    addTimeToTopic(0,15,0);
+}
+
+void MainWindow::add5m() {
+    addTimeToTopic(0,5,0);
+}
+
+void MainWindow::add1m() {
+    addTimeToTopic(0,1,0);
+}
+
+void MainWindow::minus15m() {
+    addTimeToTopic(0,-15,0);
+}
+
+void MainWindow::minus5m() {
+    addTimeToTopic(0,-5,0);
+}
+
+void MainWindow::minus1m() {
+    addTimeToTopic(0,-1,0);
+}
+
+
+
+
