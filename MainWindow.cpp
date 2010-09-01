@@ -137,7 +137,7 @@ void MainWindow::updateScreenTimers() {
     if (m_deltaIsNegative) {
         timerText = "<font color=\"red\"> -";
     } else {
-        timerText = "<font color=\"green\">";
+        timerText = "<font color=\"green\"> +";
     }
     ui->delta->setText(timerText + m_deltaTime.toString("mm:ss") + "</font>");
 
