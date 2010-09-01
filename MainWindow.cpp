@@ -146,6 +146,14 @@ void MainWindow::updateScreenTimers() {
 void MainWindow::timeElapsed() {
     m_topics[m_currentTopic-1]->addTime(1);
     m_spentTime = m_spentTime.addSecs(1);
+    if (m_deltaIsNegative)
+        m_deltaTime = m_deltaTime.addSecs(1);
+    else if (m_deltaTime == QTime(0,0)) {
+        m_deltaIsNegative = true;
+        m_deltaTime = QTime(0,0,1);
+    } else {
+        m_deltaTime = m_deltaTime.addSecs(-1);
+    }
     updateScreenTimers();
 }
 
