@@ -48,6 +48,8 @@ private:
     QTimer                  m_timer;
     QTime                   m_totalNeededTime;
     QTime                   m_spentTime;
+    QTime                   m_deltaTime;
+    bool                    m_deltaIsNegative;
 };
 
 #endif // MAINWINDOW_H

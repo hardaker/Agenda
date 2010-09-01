@@ -104,6 +104,7 @@ void MainWindow::switchToTopic(int number) {
     } else {
         ui->nextTopic->setText("");
     }
+    calculateTotalTimes();
     updateScreenTimers();
 }
 
@@ -132,6 +133,14 @@ void MainWindow::updateScreenTimers() {
         timerText = "<font color=\"green\">";
     }
     ui->totalTime->setText(timerText + m_spentTime.toString("mm:ss") + QString(" / ") + m_totalNeededTime.toString("mm:ss") + "</font>");
+
+    if (m_deltaIsNegative) {
+        timerText = "<font color=\"red\"> -";
+    } else {
+        timerText = "<font color=\"green\">";
+    }
+    ui->delta->setText(timerText + m_deltaTime.toString("mm:ss") + "</font>");
+
 }
 
 void MainWindow::timeElapsed() {
@@ -153,16 +162,48 @@ void MainWindow::startOrStop() {
 void MainWindow::calculateTotalTimes() {
     QList<AgendaTopic *>::iterator begin;
     QList<AgendaTopic *>::iterator end = m_topics.end();
+    QTime timeTillNow = QTime(0,0); // amount in schedule until now
 
     m_totalNeededTime = QTime(0,0);
     m_spentTime = QTime(0,0);
+    m_deltaIsNegative = false;
+    m_deltaTime = QTime(0,0);
 
+    int count = 0;
     for(begin = m_topics.begin(); begin != end; begin++) {
         QTime newTime = (*begin)->timeNeeded();
+        QTime neededTime = (*begin)->timeNeeded();
+
         m_totalNeededTime = m_totalNeededTime.addSecs(newTime.second() + 60 * newTime.minute() + 3600 * newTime.hour());
         newTime = (*begin)->timeSpent();
         m_spentTime = m_spentTime.addSecs(newTime.second() + 60 * newTime.minute() + 3600 * newTime.hour());
+
+        if (m_currentTopic > count) {
+            timeTillNow = m_spentTime;
+            m_deltaTime = m_totalNeededTime;
+        }
+        count++;
     }
+
+    qDebug() << "-----";
+    qDebug() << "time till now: " << timeTillNow;
+    qDebug() << "needed before this point: " << m_deltaTime;
+    qDebug() << "spent time: " << m_spentTime;
+
+    if (m_spentTime <= m_deltaTime) {
+        // yay, we're ahead of schedule
+        m_deltaIsNegative = false;
+        int secondsToAdd = - (m_spentTime.second() + 60 * m_spentTime.minute() + 3600 * m_spentTime.hour());
+        qDebug() << "adding:" << secondsToAdd;
+        m_deltaTime = m_deltaTime.addSecs(secondsToAdd);
+    } else {
+        m_deltaIsNegative = true;
+        QTime tmpTime;
+        tmpTime = m_deltaTime;
+        m_deltaTime = m_spentTime;
+        m_deltaTime = m_deltaTime.addSecs(- (tmpTime.second() + 60 * tmpTime.minute() + 3600 * tmpTime.hour()));
+    }
+    qDebug() << "result: " << m_deltaTime;
 }
 
 void MainWindow::addTimeToTopic(int hours, int minutes, int seconds) {
