@@ -14,7 +14,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0), m_belowAlarmTime(false),
-    m_dbusInterface(0), m_alarmTime(60)
+    m_dbusInterface(0), m_alarmTime(60), m_useLED(true)
 {
     ui->setupUi(this);
 
@@ -64,6 +64,12 @@ void MainWindow::mainWindowSetup(Ui::MainWindow *ui) {
 void MainWindow::setupMenus() {
     QAction *action = menuBar()->addAction("Topics");
     connect(action, SIGNAL(triggered()), this, SLOT(editTopics()));
+
+    action = menuBar()->addAction("Use LED Notification");
+    action->setCheckable(true);
+    action->setChecked(m_useLED);
+
+    connect(action, SIGNAL(toggled(bool)), this, SLOT(setUseLED(bool)));
 }
 
 void MainWindow::editTopics() {
@@ -102,6 +108,12 @@ void MainWindow::editTopics() {
     calculateTotalTimes();
     switchToTopic(m_currentTopic);
     qDebug() << "done";
+}
+
+void MainWindow::setUseLED(bool value) {
+    m_useLED = value;
+    if (!m_useLED)
+        clearAlarm();
 }
 
 void MainWindow::switchToTopic(int number) {
@@ -149,6 +161,8 @@ void MainWindow::updateScreenTimers() {
     qDebug() << "checking: " << m_belowAlarmTime << " - " << curTime << " - " <<  m_topics[m_currentTopic-1]->timeNeeded();
     if (!m_belowAlarmTime && curTime > m_topics[m_currentTopic-1]->timeNeeded()) {
         triggerAlarm();
+    } else if (m_belowAlarmTime) {
+        clearAlarm();
     }
 
     // Display th e total quantity of time left
@@ -171,6 +185,9 @@ void MainWindow::triggerAlarm() {
     clearAlarm();
     m_belowAlarmTime = true;
 
+    if (!m_useLED)
+        return;
+
     qDebug() << "alarm time";
 #ifdef IS_MAEMO
     QDBusMessage reply;
@@ -181,7 +198,7 @@ void MainWindow::triggerAlarm() {
         qDebug() << reply.errorMessage();
 
     // turn on the display too
-    reply = m_dbusInterface->call(MCE_DISPLAY_ON_REQ);
+    reply = m_dbusInterface->call(MCE_DISPLAY_ON_REQ, 1);
     if (reply.type() == QDBusMessage::ErrorMessage)
         qDebug() << reply.errorMessage();
 #endif
