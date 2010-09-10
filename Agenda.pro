@@ -32,7 +32,7 @@ symbian {
     TARGET.EPOCHEAPSIZE = 0x020000 0x800000
 }
 
-maemo {
+maemo5 {
     QT       += dbus
 }
 
