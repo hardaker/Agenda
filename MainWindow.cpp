@@ -219,6 +219,7 @@ void MainWindow::timeElapsed() {
 void MainWindow::startOrStop() {
     if (m_timer.isActive()) {
         m_timer.stop();
+        clearAlarm();
         ui->start->setText("Start");
     } else {
         m_timer.start(1000);
