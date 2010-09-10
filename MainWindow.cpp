@@ -65,11 +65,13 @@ void MainWindow::setupMenus() {
     QAction *action = menuBar()->addAction("Topics");
     connect(action, SIGNAL(triggered()), this, SLOT(editTopics()));
 
+#if IS_MAEMO
     action = menuBar()->addAction("Use LED Notification");
     action->setCheckable(true);
     action->setChecked(m_useLED);
 
     connect(action, SIGNAL(toggled(bool)), this, SLOT(setUseLED(bool)));
+#endif
 }
 
 void MainWindow::editTopics() {
