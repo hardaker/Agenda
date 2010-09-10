@@ -163,7 +163,7 @@ void MainWindow::updateScreenTimers() {
     qDebug() << "checking: " << m_belowAlarmTime << " - " << curTime << " - " <<  m_topics[m_currentTopic-1]->timeNeeded();
     if (!m_belowAlarmTime && curTime > m_topics[m_currentTopic-1]->timeNeeded()) {
         triggerAlarm();
-    } else if (m_belowAlarmTime) {
+    } else if (m_belowAlarmTime && curTime <= m_topics[m_currentTopic-1]->timeNeeded()) {
         clearAlarm();
     }
 
