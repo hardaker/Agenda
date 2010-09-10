@@ -6,10 +6,15 @@
 #include <QtGui/QActionGroup>
 #include <QtGui/QAction>
 #include <QDebug>
+#if IS_MAEMO
+#include <mce/dbus-names.h>
+#endif
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0)
+    ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0), m_belowAlarmTime(false),
+    m_dbusInterface(0), m_alarmTime(60)
 {
     ui->setupUi(this);
 
@@ -36,6 +41,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->minus1, SIGNAL(clicked()), this, SLOT(minus1m()));
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeElapsed()));
+
+#ifdef IS_MAEMO
+    m_dbusInterface = new QDBusInterface(MCE_SERVICE, MCE_REQUEST_PATH, MCE_REQUEST_IF, QDBusConnection::systemBus(), this);
+    QDBusMessage reply = m_dbusInterface->call(MCE_ENABLE_LED);
+    if (reply.type() == QDBusMessage::ErrorMessage)
+        qDebug() << reply.errorMessage();
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -104,6 +116,8 @@ void MainWindow::switchToTopic(int number) {
     } else {
         ui->nextTopic->setText("");
     }
+
+    clearAlarm();
     calculateTotalTimes();
     updateScreenTimers();
 }
@@ -120,6 +134,8 @@ void MainWindow::switchToPreviousTopic() {
 
 void MainWindow::updateScreenTimers() {
     QString timerText;
+
+    // Display the current agenda's time left
     if (m_topics[m_currentTopic-1]->timeSpent() > m_topics[m_currentTopic-1]->timeNeeded()) {
         timerText = "<font color=\"red\">";
     } else {
@@ -127,6 +143,14 @@ void MainWindow::updateScreenTimers() {
     }
     ui->timeLeft->setText(timerText + m_topics[m_currentTopic-1]->timeSpentStr() + QString(" / ") + m_topics[m_currentTopic-1]->timeNeededStr() + "</font>");
 
+    // Maybe trigger the alarm
+    QTime curTime = m_topics[m_currentTopic-1]->timeSpent().addSecs(m_alarmTime);
+    qDebug() << "checking: " << m_belowAlarmTime << " - " << curTime << " - " <<  m_topics[m_currentTopic-1]->timeNeeded();
+    if (!m_belowAlarmTime && curTime > m_topics[m_currentTopic-1]->timeNeeded()) {
+        triggerAlarm();
+    }
+
+    // Display th e total quantity of time left
     if (m_spentTime > m_totalNeededTime) {
         timerText = "<font color=\"red\">";
     } else {
@@ -140,7 +164,41 @@ void MainWindow::updateScreenTimers() {
         timerText = "<font color=\"green\"> +";
     }
     ui->delta->setText(timerText + m_deltaTime.toString("mm:ss") + "</font>");
+}
 
+void MainWindow::triggerAlarm() {
+    clearAlarm();
+    m_belowAlarmTime = true;
+
+    qDebug() << "alarm time";
+#ifdef IS_MAEMO
+    QDBusMessage reply;
+
+    // set the LED pattern
+    reply = m_dbusInterface->call(MCE_ACTIVATE_LED_PATTERN, "PatternError");
+    if (reply.type() == QDBusMessage::ErrorMessage)
+        qDebug() << reply.errorMessage();
+
+    // turn on the display too
+    reply = m_dbusInterface->call(MCE_DISPLAY_ON_REQ);
+    if (reply.type() == QDBusMessage::ErrorMessage)
+        qDebug() << reply.errorMessage();
+#endif
+}
+
+void MainWindow::clearAlarm() {
+    if (!m_belowAlarmTime)
+        return;
+
+    qDebug() << "clearing time";
+
+    m_belowAlarmTime = false;
+#ifdef IS_MAEMO
+    QDBusMessage reply;
+    reply = m_dbusInterface->call(MCE_DEACTIVATE_LED_PATTERN, "PatternError");
+    if (reply.type() == QDBusMessage::ErrorMessage)
+        qDebug() << reply.errorMessage();
+#endif
 }
 
 void MainWindow::timeElapsed() {

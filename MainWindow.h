@@ -5,6 +5,12 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
+#if defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES)
+#define IS_MAEMO 1
+#endif
+
+#include <QtDBus/QDBusInterface>
+
 #include "AgendaTopic.h"
 
 namespace Ui {
@@ -31,6 +37,8 @@ public slots:
     void timeElapsed();
     void calculateTotalTimes();
     void editTopics();
+    void triggerAlarm();
+    void clearAlarm();
 
     void startOrStop();
 
@@ -50,6 +58,9 @@ private:
     QTime                   m_spentTime;
     QTime                   m_deltaTime;
     bool                    m_deltaIsNegative;
+    bool                    m_belowAlarmTime;
+    QDBusInterface          *m_dbusInterface;
+    int                     m_alarmTime;
 };
 
 #endif // MAINWINDOW_H

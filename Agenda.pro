@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui dbus
 
 TARGET = Agenda
 TEMPLATE = app
@@ -30,4 +30,9 @@ symbian {
     # TARGET.CAPABILITY += 
     TARGET.EPOCSTACKSIZE = 0x14000
     TARGET.EPOCHEAPSIZE = 0x020000 0x800000
+}
+
+unix {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += mce
 }
