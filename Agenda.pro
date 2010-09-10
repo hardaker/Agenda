@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui dbus
+QT       += core gui
 
 TARGET = Agenda
 TEMPLATE = app
@@ -30,6 +30,10 @@ symbian {
     # TARGET.CAPABILITY += 
     TARGET.EPOCSTACKSIZE = 0x14000
     TARGET.EPOCHEAPSIZE = 0x020000 0x800000
+}
+
+maemo {
+    QT       += dbus
 }
 
 unix {
