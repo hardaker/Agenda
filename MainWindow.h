@@ -28,6 +28,7 @@ public:
     void mainWindowSetup(Ui::MainWindow *ui);
     void addTimeToTopic(int hours, int minutes, int seconds);
     void setupMenus();
+    void setupAgendaTopics(QStringList topics);
 
 public slots:
     void switchToNextTopic();
@@ -37,6 +38,7 @@ public slots:
     void timeElapsed();
     void calculateTotalTimes();
     void editTopics();
+    void loadTopics();
     void triggerAlarm();
     void clearAlarm();
     void setUseLED(bool value);

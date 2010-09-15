@@ -5,6 +5,7 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QActionGroup>
 #include <QtGui/QAction>
+#include <QtGui/QFileDialog>
 #include <QDebug>
 #if IS_MAEMO
 #include <mce/dbus-names.h>
@@ -65,6 +66,9 @@ void MainWindow::setupMenus() {
     QAction *action = menuBar()->addAction("Topics");
     connect(action, SIGNAL(triggered()), this, SLOT(editTopics()));
 
+    action = menuBar()->addAction("Topics from File");
+    connect(action, SIGNAL(triggered()), this, SLOT(loadTopics()));
+
 #if IS_MAEMO
     action = menuBar()->addAction("Use LED Notification");
     action->setCheckable(true);
@@ -89,23 +93,49 @@ void MainWindow::editTopics() {
 
     // parse the results
     if (result == QDialog::Accepted) {
-        m_topics.clear(); // X mem leak
+        setupAgendaTopics(topicDialog.getTopics());
+    }
+}
 
-        QRegExp exp("^\\s*(\\d+):(\\d+)\\s+(.*)");
-        QStringList results;
+void MainWindow::loadTopics() {
+    QString fileName =
+            QFileDialog::getOpenFileName(this, tr("Open Agenda File"),
+                                         QString(),
+                                         tr("Text Files (*.txt)"));
+    if (fileName.length() > 0) {
+        qDebug() << "loading from" << fileName;
+        QStringList topics;
+        QFile inputFile(fileName);
 
-        QStringList topics = topicDialog.getTopics();
-        QStringList::iterator begin;
-        QStringList::iterator end = topics.end();
-        for(begin = topics.begin(); begin != end; begin++) {
-            if(exp.indexIn(*begin) != -1) {
-                m_topics.append(new AgendaTopic(exp.cap(3),
-                                                QTime(0, exp.cap(1).toInt(), exp.cap(2).toInt())));
-            } else {
-                m_topics.append(new AgendaTopic(*begin, QTime(0,0)));
-            }
+        if (!inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+
+        QTextStream lines(&inputFile);
+        while (!lines.atEnd()) {
+            topics.push_back(lines.readLine());
+        }
+
+        setupAgendaTopics(topics);
+    }
+}
+
+void MainWindow::setupAgendaTopics(QStringList topics) {
+    m_topics.clear(); // X mem leak
+
+    QRegExp exp("^\\s*(\\d+):(\\d+)\\s+(.*)");
+    QStringList results;
+
+    QStringList::iterator begin;
+    QStringList::iterator end = topics.end();
+    for(begin = topics.begin(); begin != end; begin++) {
+        if(exp.indexIn(*begin) != -1) {
+            m_topics.append(new AgendaTopic(exp.cap(3),
+                                            QTime(0, exp.cap(1).toInt(), exp.cap(2).toInt())));
+        } else {
+            m_topics.append(new AgendaTopic(*begin, QTime(0,0)));
         }
     }
+
     m_currentTopic = 1;
     calculateTotalTimes();
     switchToTopic(m_currentTopic);
