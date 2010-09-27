@@ -79,8 +79,13 @@ XB-Maemo-Icon-26:
 Package: Agenda
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: An agenda timer that keeps track of topics and allocated time
+Description: An agenda timer that keeps track of topics and allocated time.
+ Agenda Timer is a tool for keeping meetings on time.  After the
+ creation of a simple text agenda (with times) you can start a timer
+ that will keep track of how much time you spend on each topic, how
+ much total time you're ahead or behind by, etc.
 XSBC-Bugtracker: mailto:wjhns177@hardakers.net
+XSBC-Maemo-Display-Name: Agenda Timer
 XB-Maemo-Icon-26: 
  iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGP
  C/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUw
