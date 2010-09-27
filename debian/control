@@ -1,4 +1,4 @@
-Source: Agenda
+Source: agenda
 Section: user/office
 Priority: extra
 Maintainer: Wes Hardaker <wjhns177@hardakers.net>
@@ -76,7 +76,7 @@ XB-Maemo-Icon-26:
  OjAw+pNxMgAAAABJRU5ErkJggg==
  ====
 
-Package: Agenda
+Package: agenda
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: An agenda timer that keeps track of topics and allocated time.
