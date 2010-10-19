@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Agenda
+GenericName=An agenda timer that keeps you on track in meetings
+Comment=none
+Exec=/opt/maemo/usr/bin/Agenda
+Icon=agenda
+Terminal=false
+Type=Application
+Categories=Office;
+StartupWMClass=agenda
+StartupNotify=true
