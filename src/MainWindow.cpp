@@ -59,9 +59,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QAudioFormat format;
     // Set up the format, eg.
-    format.setFrequency(8000);
+    format.setFrequency(44100);
     format.setChannels(1);
-    format.setSampleSize(8);
+    format.setSampleSize(16);
     format.setCodec("audio/pcm");
     format.setByteOrder(QAudioFormat::LittleEndian);
     format.setSampleType(QAudioFormat::UnSignedInt);
