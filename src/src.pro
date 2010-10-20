@@ -66,7 +66,7 @@ unix {
 
     #MAKE INSTALL
 
-    INSTALLS += target desktop service iconxpm icon26 icon48 icon64
+    INSTALLS += target desktop service iconxpm icon26 icon48 sounds
 
     target.path =$$BINDIR
 
@@ -84,6 +84,10 @@ unix {
 
     icon48.path = $$DATADIR/icons/hicolor/48x48/apps
     icon48.files += ../data/48x48/$${TARGET}.png
+
+    sounds.path = $$DATADIR/agenda/sounds
+    sounds.files += $$DATADIR/agenda/sounds/KDE_Critical_Error.wav
+    sounds.files += $$DATADIR/agenda/sounds/KDE_Notify.wav
 
 #   icon64.path = $$DATADIR/icons/hicolor/64x64/apps
 #   icon64.files += ../data/64x64/$${TARGET}.png

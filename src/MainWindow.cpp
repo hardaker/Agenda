@@ -247,8 +247,8 @@ void MainWindow::triggerAlarm() {
     }
 
     if (m_useSounds) {
-        qDebug() << "playing sound";
-        QSound::play(":/sounds/KDE_Notify.wav");
+        QSound::play(DATADIR "/agenda/sounds/KDE_Notify.wav");
+        qDebug() << "playing sound" << DATADIR "/agenda/sounds/KDE_Notify.wav";
     }
 }
 
