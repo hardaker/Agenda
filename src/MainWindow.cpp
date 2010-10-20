@@ -6,6 +6,8 @@
 #include <QtGui/QActionGroup>
 #include <QtGui/QAction>
 #include <QtGui/QFileDialog>
+#include <QSound>
+
 #include <QDebug>
 #if IS_MAEMO
 #include <mce/dbus-names.h>
@@ -15,7 +17,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0), m_belowAlarmTime(false),
-    m_dbusInterface(0), m_alarmTime(60), m_useLED(true)
+    m_dbusInterface(0), m_alarmTime(60), m_useLED(true), m_useSounds(true)
 {
     ui->setupUi(this);
 
@@ -76,6 +78,12 @@ void MainWindow::setupMenus() {
 
     connect(action, SIGNAL(toggled(bool)), this, SLOT(setUseLED(bool)));
 #endif
+
+    action = menuBar()->addAction("Warning Sounds");
+    action->setCheckable(true);
+    action->setChecked(m_useSounds);
+
+    connect(action, SIGNAL(toggled(bool)), this, SLOT(setUseSounds(bool)));
 }
 
 void MainWindow::editTopics() {
@@ -148,6 +156,10 @@ void MainWindow::setUseLED(bool value) {
         clearAlarm();
 }
 
+void MainWindow::setUseSounds(bool value) {
+    m_useSounds = value;
+}
+
 void MainWindow::switchToTopic(int number) {
     if (number > m_topics.count() || number < 1)
         return;
@@ -217,23 +229,27 @@ void MainWindow::triggerAlarm() {
     clearAlarm();
     m_belowAlarmTime = true;
 
-    if (!m_useLED)
-        return;
-
-    qDebug() << "alarm time";
+    if (m_useLED) {
+        qDebug() << "alarm time";
 #ifdef IS_MAEMO
-    QDBusMessage reply;
+        QDBusMessage reply;
 
-    // set the LED pattern
-    reply = m_dbusInterface->call(MCE_ACTIVATE_LED_PATTERN, "PatternError");
-    if (reply.type() == QDBusMessage::ErrorMessage)
-        qDebug() << reply.errorMessage();
+        // set the LED pattern
+        reply = m_dbusInterface->call(MCE_ACTIVATE_LED_PATTERN, "PatternError");
+        if (reply.type() == QDBusMessage::ErrorMessage)
+            qDebug() << reply.errorMessage();
 
-    // turn on the display too
-    reply = m_dbusInterface->call(MCE_DISPLAY_ON_REQ, 1);
-    if (reply.type() == QDBusMessage::ErrorMessage)
-        qDebug() << reply.errorMessage();
+        // turn on the display too
+        reply = m_dbusInterface->call(MCE_DISPLAY_ON_REQ, 1);
+        if (reply.type() == QDBusMessage::ErrorMessage)
+            qDebug() << reply.errorMessage();
 #endif
+    }
+
+    if (m_useSounds) {
+        qDebug() << "playing sound";
+        QSound::play(":/sounds/KDE_Notify.wav");
+    }
 }
 
 void MainWindow::clearAlarm() {

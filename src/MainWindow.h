@@ -42,6 +42,7 @@ public slots:
     void triggerAlarm();
     void clearAlarm();
     void setUseLED(bool value);
+    void setUseSounds(bool value);
     void startOrStop();
 
     void add15m();
@@ -64,6 +65,7 @@ private:
     QDBusInterface          *m_dbusInterface;
     int                     m_alarmTime;
     bool                    m_useLED;
+    bool                    m_useSounds;
 };
 
 #endif // MAINWINDOW_H
