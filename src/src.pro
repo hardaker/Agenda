@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 TARGET = Agenda
 TEMPLATE = app
@@ -86,8 +86,8 @@ unix {
     icon48.files += ../data/48x48/$${TARGET}.png
 
     sounds.path = $$DATADIR/agenda/sounds
-    sounds.files += $$DATADIR/agenda/sounds/KDE_Critical_Error.wav
-    sounds.files += $$DATADIR/agenda/sounds/KDE_Notify.wav
+    sounds.files += $$DATADIR/agenda/sounds/KDE_Critical_ErrorSm.wav
+    sounds.files += $$DATADIR/agenda/sounds/KDE_NotifySm.wav
 
 #   icon64.path = $$DATADIR/icons/hicolor/64x64/apps
 #   icon64.files += ../data/64x64/$${TARGET}.png

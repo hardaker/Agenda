@@ -4,6 +4,8 @@
 #include <QtGui/QMainWindow>
 #include <QtCore/QList>
 #include <QtCore/QTimer>
+#include <QtCore/QFile>
+#include <QtMultimedia/QAudioOutput>
 
 #if defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES)
 #define IS_MAEMO 1
@@ -66,6 +68,9 @@ private:
     int                     m_alarmTime;
     bool                    m_useLED;
     bool                    m_useSounds;
+
+    QFile                   m_soundFile;
+    QAudioOutput           *m_audioOut;
 };
 
 #endif // MAINWINDOW_H
