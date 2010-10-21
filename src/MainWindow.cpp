@@ -272,9 +272,8 @@ void MainWindow::triggerWarningAlarm() {
         m_warningFile.setFileName(DATADIR "/agenda/sounds/KDE_NotifySm.wav");
         m_warningFile.open(QIODevice::ReadOnly);
 
+        m_audioOut->reset();
         m_audioOut->start(&m_warningFile);
-
-
     }
 }
 
@@ -286,6 +285,7 @@ void MainWindow::triggerEndAlarm() {
         m_doneFile.setFileName(DATADIR "/agenda/sounds/KDE_Critical_ErorrSm.wav");
         m_doneFile.open(QIODevice::ReadOnly);
 
+        m_audioOut->reset();
         m_audioOut->start(&m_doneFile);
     }
 }
