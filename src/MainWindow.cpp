@@ -16,7 +16,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0), m_belowAlarmTime(false),
+    ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0), m_belowAlarmTime(false), m_belowEndTime(false),
     m_dbusInterface(0), m_alarmTime(60), m_useLED(true), m_useSounds(true)
 {
     ui->setupUi(this);
@@ -220,9 +220,13 @@ void MainWindow::updateScreenTimers() {
     QTime curTime = m_topics[m_currentTopic-1]->timeSpent().addSecs(m_alarmTime);
     qDebug() << "checking: " << m_belowAlarmTime << " - " << curTime << " - " <<  m_topics[m_currentTopic-1]->timeNeeded();
     if (!m_belowAlarmTime && curTime > m_topics[m_currentTopic-1]->timeNeeded()) {
-        triggerAlarm();
+        triggerWarningAlarm();
     } else if (m_belowAlarmTime && curTime <= m_topics[m_currentTopic-1]->timeNeeded()) {
         clearAlarm();
+    }
+
+    if (!m_belowEndTime && m_topics[m_currentTopic-1]->timeSpent() > m_topics[m_currentTopic-1]->timeNeeded()) {
+        triggerEndAlarm();
     }
 
     // Display th e total quantity of time left
@@ -241,7 +245,7 @@ void MainWindow::updateScreenTimers() {
     ui->delta->setText(timerText + m_deltaTime.toString("mm:ss") + "</font>");
 }
 
-void MainWindow::triggerAlarm() {
+void MainWindow::triggerWarningAlarm() {
     clearAlarm();
     m_belowAlarmTime = true;
 
@@ -274,6 +278,18 @@ void MainWindow::triggerAlarm() {
     }
 }
 
+void MainWindow::triggerEndAlarm() {
+    m_belowEndTime = true;
+    if (m_useSounds) {
+        qDebug() << "playing END sound";
+
+        m_doneFile.setFileName(DATADIR "/agenda/sounds/KDE_Critical_ErorrSm.wav");
+        m_doneFile.open(QIODevice::ReadOnly);
+
+        m_audioOut->start(&m_doneFile);
+    }
+}
+
 void MainWindow::clearAlarm() {
     if (!m_belowAlarmTime)
         return;
@@ -281,6 +297,7 @@ void MainWindow::clearAlarm() {
     qDebug() << "clearing time";
 
     m_belowAlarmTime = false;
+    m_belowEndTime = false;
 #ifdef IS_MAEMO
     QDBusMessage reply;
     reply = m_dbusInterface->call(MCE_DEACTIVATE_LED_PATTERN, "PatternError");

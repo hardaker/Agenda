@@ -41,7 +41,8 @@ public slots:
     void calculateTotalTimes();
     void editTopics();
     void loadTopics();
-    void triggerAlarm();
+    void triggerWarningAlarm();
+    void triggerEndAlarm();
     void clearAlarm();
     void setUseLED(bool value);
     void setUseSounds(bool value);
@@ -64,6 +65,7 @@ private:
     QTime                   m_deltaTime;
     bool                    m_deltaIsNegative;
     bool                    m_belowAlarmTime;
+    bool                    m_belowEndTime;
     QDBusInterface          *m_dbusInterface;
     int                     m_alarmTime;
     bool                    m_useLED;
