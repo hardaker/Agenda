@@ -69,7 +69,8 @@ private:
     bool                    m_useLED;
     bool                    m_useSounds;
 
-    QFile                   m_soundFile;
+    QFile                   m_warningFile;
+    QFile                   m_doneFile;
     QAudioOutput           *m_audioOut;
 };
 

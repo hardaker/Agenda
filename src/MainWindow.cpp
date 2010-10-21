@@ -54,9 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // set up the output audio
 
-    m_soundFile.setFileName(DATADIR "/agenda/sounds/KDE_NotifySm.wav");
-    m_soundFile.open(QIODevice::ReadOnly);
-
     QAudioFormat format;
     // Set up the format, eg.
     format.setFrequency(44100);
@@ -64,16 +61,12 @@ MainWindow::MainWindow(QWidget *parent) :
     format.setSampleSize(16);
     format.setCodec("audio/pcm");
     format.setByteOrder(QAudioFormat::LittleEndian);
-    format.setSampleType(QAudioFormat::UnSignedInt);
+    format.setSampleType(QAudioFormat::SignedInt);
 
     QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
-    if (!info.isFormatSupported(format)) {
-        qWarning()<<"raw audio format not supported by backend, cannot play audio.";
-    } else {
-        m_audioOut = new QAudioOutput(format, this);
-        // connect(m_audioOut,SIGNAL(stateChanged(QAudio::State)),SLOT(finishedPlaying(QAudio::State)));
-        m_audioOut->start(&m_soundFile);
-    }
+
+    m_audioOut = new QAudioOutput(format);
+    // connect(m_audioOut,SIGNAL(stateChanged(QAudio::State)),SLOT(finishedPlaying(QAudio::State)));
 }
 
 MainWindow::~MainWindow()
@@ -270,9 +263,14 @@ void MainWindow::triggerAlarm() {
     }
 
     if (m_useSounds) {
-        QSound::play("KDE_Notify.wav");
-        // QSound::play(DATADIR "/agenda/sounds/KDE_Notify.wav");
-        qDebug() << "playing sound" << DATADIR "/agenda/sounds/KDE_Notify.wav";
+        qDebug() << "playing sound";
+
+        m_warningFile.setFileName(DATADIR "/agenda/sounds/KDE_NotifySm.wav");
+        m_warningFile.open(QIODevice::ReadOnly);
+
+        m_audioOut->start(&m_warningFile);
+
+
     }
 }
 
