@@ -24,12 +24,18 @@ const QTime &AgendaTopic::timeSpent() const {
     return m_timeSpent;
 }
 
+QString AgendaTopic::formatTime(const QTime &aTime) const {
+    if (aTime >= QTime(1,0))
+        return aTime.toString("h'h':mm");
+    return aTime.toString("mm:ss");
+}
+
 QString AgendaTopic::timeSpentStr() const {
-    return m_timeSpent.toString("mm:ss");
+    return formatTime(m_timeSpent);
 }
 
 QString AgendaTopic::timeNeededStr() const {
-    return m_timeNeeded.toString("mm:ss");
+    return formatTime(m_timeNeeded);
 }
 
 void AgendaTopic::addTime(int thisManySeconds) {

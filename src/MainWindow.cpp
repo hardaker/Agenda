@@ -235,7 +235,7 @@ void MainWindow::updateScreenTimers() {
     } else {
         timerText = "<font color=\"green\">";
     }
-    ui->totalTime->setText(timerText + m_spentTime.toString("mm:ss") + QString(" / ") + m_totalNeededTime.toString("mm:ss") + "</font>");
+    ui->totalTime->setText(timerText + m_topics[m_currentTopic-1]->formatTime(m_spentTime) + QString(" / ") + m_topics[m_currentTopic-1]->formatTime(m_totalNeededTime) + "</font>");
 
     if (m_deltaIsNegative) {
         timerText = "<font color=\"red\"> -";

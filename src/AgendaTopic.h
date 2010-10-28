@@ -17,6 +17,7 @@ public:
     const QTime   &timeSpent() const;
           QString timeSpentStr() const;
           QString timeNeededStr() const;
+          QString formatTime(const QTime &aTime) const;
     void addTime(int thisManySeconds);
     void addNeededTime(int thisManySeconds);
 

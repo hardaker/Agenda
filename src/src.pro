@@ -92,3 +92,16 @@ unix {
 #   icon64.path = $$DATADIR/icons/hicolor/64x64/apps
 #   icon64.files += ../data/64x64/$${TARGET}.png
 }
+
+OTHER_FILES += \
+    Agenda.desktop
+
+unix:!symbian {
+    desktopfile.files = $${TARGET}.desktop
+    maemo5 {
+        desktopfile.path = /usr/share/applications/hildon
+    } else {
+        desktopfile.path = /usr/share/applications
+    }
+    INSTALLS += desktopfile
+}
