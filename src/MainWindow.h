@@ -27,7 +27,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void mainWindowSetup(Ui::MainWindow *ui);
+    void mainWindowSetup();
     void addTimeToTopic(int hours, int minutes, int seconds);
     void setupMenus();
     void setupAgendaTopics(QStringList topics);

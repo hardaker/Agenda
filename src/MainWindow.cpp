@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_currentTopic = 1;
 
-    mainWindowSetup(ui);
+    mainWindowSetup();
     setupMenus();
 
     connect(ui->next, SIGNAL(clicked()), this, SLOT(switchToNextTopic()));
@@ -75,7 +75,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::mainWindowSetup(Ui::MainWindow *ui) {
+void MainWindow::mainWindowSetup() {
     switchToTopic(m_currentTopic);
     updateScreenTimers();
 }
