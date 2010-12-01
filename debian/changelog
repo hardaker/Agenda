@@ -1,8 +1,8 @@
 agenda (0.2-1) unstable; urgency=low
  
- * Added a missing desktop file
- * Plays a sound at the warning time
- * fixed display times for displaying times > 1 hour
+  * Added a missing desktop file
+  * Plays a sound at the warning time
+  * fixed display times for displaying times > 1 hour
  
  -- Wes Hardaker <wjhns177@hardakers.net>  Wed, 01 Dec 2010 15:23:27 -0700
 
