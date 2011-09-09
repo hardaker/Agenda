@@ -5,13 +5,17 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 #include <QtCore/QFile>
+#ifdef HAS_MULTIMEDIA_AUDIO
 #include <QtMultimedia/QAudioOutput>
+#endif
 
 #if defined(Q_WS_MAEMO_5) || defined(MAEMO_CHANGES)
 #define IS_MAEMO 1
 #endif
 
+#ifdef HAS_DBUS
 #include <QtDBus/QDBusInterface>
+#endif
 
 #include "AgendaTopic.h"
 
@@ -66,14 +70,18 @@ private:
     bool                    m_deltaIsNegative;
     bool                    m_belowAlarmTime;
     bool                    m_belowEndTime;
+#ifdef HAS_DBUS
     QDBusInterface          *m_dbusInterface;
+#endif
     int                     m_alarmTime;
     bool                    m_useLED;
     bool                    m_useSounds;
 
     QFile                   m_warningFile;
     QFile                   m_doneFile;
+#ifdef HAS_SOUND
     QAudioOutput           *m_audioOut;
+#endif
 };
 
 #endif // MAINWINDOW_H

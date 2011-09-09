@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia
+QT       += core gui
 
 TARGET = Agenda
 TEMPLATE = app
@@ -52,7 +52,7 @@ QMAKE_EXTRA_TARGETS += debian-all debian-src debian-bin install compiler_clean
 
 unix {
     CONFIG += link_pkgconfig
-    PKGCONFIG += mce
+    //PKGCONFIG += mce
 
     #VARIABLES
     isEmpty(PREFIX) {

@@ -17,7 +17,10 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow), m_timer(), m_totalNeededTime(0,0), m_spentTime(0,0), m_belowAlarmTime(false), m_belowEndTime(false),
-    m_dbusInterface(0), m_alarmTime(60), m_useLED(true), m_useSounds(true)
+    #ifdef HAS_DBUS
+    m_dbusInterface(0),
+    #endif
+    m_alarmTime(60), m_useLED(true), m_useSounds(true)
 {
     ui->setupUi(this);
 
@@ -54,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // set up the output audio
 
+#ifdef HAS_SOUND
     QAudioFormat format;
     // Set up the format, eg.
     format.setFrequency(44100);
@@ -67,6 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_audioOut = new QAudioOutput(format);
     // connect(m_audioOut,SIGNAL(stateChanged(QAudio::State)),SLOT(finishedPlaying(QAudio::State)));
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -266,6 +271,7 @@ void MainWindow::triggerWarningAlarm() {
 #endif
     }
 
+#ifdef HAS_SOUND
     if (m_useSounds) {
         qDebug() << "playing sound";
 
@@ -275,6 +281,7 @@ void MainWindow::triggerWarningAlarm() {
         m_audioOut->reset();
         m_audioOut->start(&m_warningFile);
     }
+#endif
 }
 
 void MainWindow::triggerEndAlarm() {
@@ -285,8 +292,10 @@ void MainWindow::triggerEndAlarm() {
         m_doneFile.setFileName(DATADIR "/agenda/sounds/KDE_Critical_ErorrSm.wav");
         m_doneFile.open(QIODevice::ReadOnly);
 
+#ifdef HAS_SOUND
         m_audioOut->reset();
         m_audioOut->start(&m_doneFile);
+#endif
     }
 }
 
